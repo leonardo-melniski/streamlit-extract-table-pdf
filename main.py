@@ -40,13 +40,20 @@ def main():
         pdf_reader = PdfReader(pdf)
         
         for i, page in enumerate(pdf_reader.pages):
-            print(i)
-            print(page.annotations)
             text = page.extract_text()
             
             tables = extract_tables(temp_file_path, pages_to_extract=str(i+1))
-            for table in tables:
+            for i, table in enumerate(tables):
+                st.markdown("""---""")
+                st.markdown("## Tabela " + str(i+1))
+                
                 st.dataframe(table)
+                csv_string = table.to_csv(index=False)
+
+                st.text(csv_string)
+
+
+                
 
 
 if __name__ == '__main__':
